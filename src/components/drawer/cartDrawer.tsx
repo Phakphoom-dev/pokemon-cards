@@ -1,18 +1,16 @@
+import CartItem from "@/components/cart/cartItem";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { useCartStore } from "@/stores/cartStore";
-import CartItem from "@/components/cart/cartItem";
 import { ICartItem } from "@/interfaces/cart";
-import { cn } from "@/lib/utils";
+import { useCartStore } from "@/stores/cartStore";
 import * as CurrencyFormat from "react-currency-format";
 import { FiShoppingBag } from "react-icons/fi";
 import { HiOutlineXMark } from "react-icons/hi2";
