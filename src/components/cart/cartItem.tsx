@@ -3,7 +3,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/stores/cartStore";
-import * as CurrencyFormat from "react-currency-format";
+import CurrencyFormat from "react-currency-format";
 
 type CartItemProps = {
   cartItem: ICartItem;
