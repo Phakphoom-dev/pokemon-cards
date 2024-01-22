@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/drawer";
 import { ICartItem } from "@/interfaces/cart";
 import { useCartStore } from "@/stores/cartStore";
-import * as CurrencyFormat from "react-currency-format";
+import CurrencyFormat from "react-currency-format";
 import { FiShoppingBag } from "react-icons/fi";
 import { HiOutlineXMark } from "react-icons/hi2";
 
