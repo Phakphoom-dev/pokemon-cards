@@ -7,6 +7,7 @@ interface CartState {
   addCart: (pokemonCard: IPokemonCard) => void;
   increaseCart: (id: string | number) => void;
   decreaseCart: (id: string | number) => void;
+  removeCart: (id: string | number) => void;
   clearCart: () => void;
 }
 
@@ -74,6 +75,18 @@ export const useCartStore = create<CartState>((set) => ({
       return {
         ...state,
         cartItems: [],
+      };
+    });
+  },
+  removeCart: (id: string | number) => {
+    set((state) => {
+      let cloneItems: ICartItem[] = [...state.cartItems];
+
+      cloneItems = cloneItems.filter((e) => e.id !== id);
+
+      return {
+        ...state,
+        cartItems: cloneItems,
       };
     });
   },

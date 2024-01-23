@@ -1,4 +1,5 @@
 export interface IPokemonCardQuery {
+  queryObject: Record<string, string>;
   q?: string;
   page: number;
   pageSize: number;

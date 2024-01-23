@@ -11,14 +11,22 @@ export const useMasterData = () => {
   useEffect(() => {
     const raritiesPromise = instance.get(`${API_URL}/rarities`);
     const setPromise = instance.get(`${API_URL}/sets`);
+    const typePromise = instance.get(`${API_URL}/types`);
 
-    Promise.all([raritiesPromise, setPromise]).then(
-      axios.spread(({ data: { data: rarities } }, { data: { data: sets } }) => {
-        setMasterData({
-          rarities,
-          sets,
-        });
-      })
+    Promise.all([raritiesPromise, setPromise, typePromise]).then(
+      axios.spread(
+        (
+          { data: { data: rarities } },
+          { data: { data: sets } },
+          { data: { data: types } }
+        ) => {
+          setMasterData({
+            rarities,
+            sets,
+            types,
+          });
+        }
+      )
     );
   }, []);
 

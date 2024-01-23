@@ -1,4 +1,7 @@
 import PokemonCardDisplay from "@/components/cards/pokemonCard/pokemonCardDisplay";
+import RaritiesDropdown from "@/components/dropdown/raritiesDropdown";
+import SetDropdown from "@/components/dropdown/setDropdown";
+import TypeDropdown from "@/components/dropdown/typeDropdown";
 import { CardSkeleton } from "@/components/skeletons/cardSkeleton";
 import {
   Pagination,
@@ -22,10 +25,6 @@ export default function Index() {
   const { masterData } = useMasterData();
   const { pokemonCardQuery, setQuery } = usePokemonCardStore();
   const [lastPage, setLastPage] = useState<number>(0);
-
-  useEffect(() => {
-    console.log("🚀 ~ Index ~ masterData:", masterData);
-  }, [masterData]);
 
   const {
     isPending,
@@ -72,9 +71,20 @@ export default function Index() {
 
   return (
     <div>
-      <h4 className="scroll-m-20 text-[18px] font-semibold tracking-tight">
-        Choose Card
-      </h4>
+      <div className="flex flex-wrap gap-y-4 justify-between items-center">
+        <h4 className="scroll-m-20 text-[18px] font-semibold tracking-tight">
+          Choose Card
+        </h4>
+
+        <div className="flex flex-wrap gap-2">
+          {masterData?.rarities && (
+            <RaritiesDropdown rarities={masterData.rarities} />
+          )}
+
+          {masterData?.sets && <SetDropdown sets={masterData.sets} />}
+          {masterData?.types && <TypeDropdown types={masterData.types} />}
+        </div>
+      </div>
 
       <div
         className={cn(

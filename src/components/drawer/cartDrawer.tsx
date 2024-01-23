@@ -1,4 +1,3 @@
-import CartItem from "@/components/cart/cartItem";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -14,6 +13,7 @@ import { useCartStore } from "@/stores/cartStore";
 import CurrencyFormat from "react-currency-format";
 import { FiShoppingBag } from "react-icons/fi";
 import { HiOutlineXMark } from "react-icons/hi2";
+import CartItem from "@/components/cart/cartItem";
 
 export function CartDrawer() {
   const { cartItems, clearCart } = useCartStore();

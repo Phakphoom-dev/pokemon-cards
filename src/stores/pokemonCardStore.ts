@@ -9,6 +9,12 @@ interface PokemonCardState {
 
 export const usePokemonCardStore = create<PokemonCardState>((set) => ({
   pokemonCardQuery: {
+    queryObject: {
+      name: "",
+      rarity: "",
+      ["set.name"]: "",
+      types: "",
+    },
     q: "",
     page: 1,
     pageSize: DEFAULT_PAGE_SIZE,

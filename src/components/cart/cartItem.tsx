@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/stores/cartStore";
 import CurrencyFormat from "react-currency-format";
+import { FaTrash } from "react-icons/fa";
 
 type CartItemProps = {
   cartItem: ICartItem;
 };
 
 export default function CartItem({ cartItem }: CartItemProps) {
-  const { increaseCart, decreaseCart } = useCartStore();
+  const { increaseCart, decreaseCart, removeCart } = useCartStore();
 
   const calPrice = (): string => {
     return (cartItem.price * cartItem.quantity).toFixed(2);
@@ -29,6 +30,7 @@ export default function CartItem({ cartItem }: CartItemProps) {
 
           <div>
             <div className="text-ellipsis">{cartItem.name}</div>
+
             <div className="text-light-gray">
               <CurrencyFormat
                 value={cartItem.price}
@@ -41,7 +43,15 @@ export default function CartItem({ cartItem }: CartItemProps) {
           </div>
         </div>
 
-        <div>$ {calPrice()}</div>
+        <div className="flex flex-col">
+          <span>$ {calPrice()}</span>
+          <FaTrash
+            onClick={() => {
+              removeCart(cartItem.id);
+            }}
+            className="ml-auto mt-1 fill-light-red hover:cursor-pointer"
+          />
+        </div>
       </div>
 
       <div className="flex gap-2">
