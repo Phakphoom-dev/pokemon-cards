@@ -1,11 +1,10 @@
-import { ModeToggle } from "@/components/theme/modeToggle";
 import { CartDrawer } from "@/components/drawer/cartDrawer";
 import { Input } from "@/components/ui/input";
-import { RiSearchLine } from "react-icons/ri";
-import { useDebounce } from "use-debounce";
-import { useEffect, useState } from "react";
 import { usePokemonCardStore } from "@/stores/pokemonCardStore";
 import { convertObjectToParams } from "@/utils/helper";
+import { useEffect, useState } from "react";
+import { RiSearchLine } from "react-icons/ri";
+import { useDebounce } from "use-debounce";
 
 export default function Navbar() {
   const { pokemonCardQuery, setQuery } = usePokemonCardStore();
