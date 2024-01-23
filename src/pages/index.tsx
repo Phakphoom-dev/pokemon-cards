@@ -10,25 +10,22 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { PerPageDropdown } from "@/components/ui/perPageDropdown";
-import { DEFAULT_PAGE_SIZE } from "@/constants/pokemonCard";
-import {
-  IPokemonCard,
-  IPokemonCardQuery,
-  IPokemonCardResponse,
-} from "@/interfaces/pokemonCard";
+import { useMasterData } from "@/hooks/useMasterData";
+import { IPokemonCard, IPokemonCardResponse } from "@/interfaces/pokemonCard";
 import { cn } from "@/lib/utils";
+import { usePokemonCardStore } from "@/stores/pokemonCardStore";
 import instance from "@/utils/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 export default function Index() {
-  const [pokemonCardFilters, setPokemonCardFilters] =
-    useState<IPokemonCardQuery>({
-      q: "",
-      page: 1,
-      pageSize: DEFAULT_PAGE_SIZE,
-    });
+  const { masterData } = useMasterData();
+  const { pokemonCardQuery, setQuery } = usePokemonCardStore();
   const [lastPage, setLastPage] = useState<number>(0);
+
+  useEffect(() => {
+    console.log("🚀 ~ Index ~ masterData:", masterData);
+  }, [masterData]);
 
   const {
     isPending,
@@ -39,7 +36,9 @@ export default function Index() {
   } = useQuery<IPokemonCardResponse>({
     queryKey: ["pokemonCards"],
     queryFn: () =>
-      instance.get("", { params: pokemonCardFilters }).then((res) => res.data),
+      instance
+        .get("/cards", { params: pokemonCardQuery })
+        .then((res) => res.data),
   });
 
   if (error) return "An error has occurred: " + error.message;
@@ -47,7 +46,7 @@ export default function Index() {
   useEffect(() => {
     if (pokemonCardResponse) {
       setLastPage(
-        Math.ceil(pokemonCardResponse.totalCount / pokemonCardFilters.pageSize)
+        Math.ceil(pokemonCardResponse.totalCount / pokemonCardQuery.pageSize)
       );
     }
   }, [pokemonCardResponse]);
@@ -55,7 +54,7 @@ export default function Index() {
   useEffect(() => {
     refetch();
     scrollToTop();
-  }, [pokemonCardFilters]);
+  }, [pokemonCardQuery]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -68,12 +67,7 @@ export default function Index() {
   };
 
   const handlePageChange = (page: number): void => {
-    setPokemonCardFilters((prev) => {
-      return {
-        ...prev,
-        page,
-      };
-    });
+    setQuery({ ...pokemonCardQuery, page });
   };
 
   return (
@@ -84,7 +78,7 @@ export default function Index() {
 
       <div
         className={cn(
-          "mb-6 grid grid-cols-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6 gap-4",
+          "mb-6 grid grid-cols-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4",
           !isFetching ? "mt-44" : "mt-6",
           !isFetching ? "gap-y-52" : "gap-y-6"
         )}
@@ -100,25 +94,19 @@ export default function Index() {
         )}
       </div>
 
-      <Pagination className="mb-10 flex justify-center items-center">
-        <div className={cn(pokemonCardFilters.page > 1 ? "mr-1" : "mr-4")}>
+      <Pagination className="mb-10 flex justify-center items-center flex-wrap">
+        <div className={cn(pokemonCardQuery.page > 1 ? "mr-1" : "mr-4")}>
           <PerPageDropdown
-            handleOnChange={(perPage: number) => {
-              if (pokemonCardFilters.pageSize !== perPage) {
-                setPokemonCardFilters((prev) => {
-                  return {
-                    ...prev,
-                    page: 1,
-                    pageSize: perPage,
-                  };
-                });
+            handleOnChange={(pageSize: number) => {
+              if (pokemonCardQuery.pageSize !== pageSize) {
+                setQuery({ ...pokemonCardQuery, page: 1, pageSize });
               }
             }}
           />
         </div>
 
         <PaginationContent>
-          {pokemonCardFilters.page !== 1 && (
+          {pokemonCardQuery.page !== 1 && (
             <>
               <PaginationItem>
                 <PaginationFirstPage
@@ -133,7 +121,7 @@ export default function Index() {
                 <PaginationPrevious
                   size="icon"
                   onClick={() => {
-                    handlePageChange(pokemonCardFilters.page - 1);
+                    handlePageChange(pokemonCardQuery.page - 1);
                   }}
                 />
               </PaginationItem>
@@ -141,16 +129,16 @@ export default function Index() {
           )}
 
           <PaginationItem>
-            {pokemonCardFilters.page} of {isFetching ? "..." : lastPage}
+            {pokemonCardQuery.page} of {isFetching ? "..." : lastPage}
           </PaginationItem>
 
-          {pokemonCardFilters.page !== lastPage && (
+          {pokemonCardQuery.page !== lastPage && (
             <>
               <PaginationItem>
                 <PaginationNext
                   size="icon"
                   onClick={() => {
-                    handlePageChange(pokemonCardFilters.page + 1);
+                    handlePageChange(pokemonCardQuery.page + 1);
                   }}
                 />
               </PaginationItem>

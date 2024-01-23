@@ -6,12 +6,15 @@ import { useLockedBody } from "usehooks-ts";
 import { FiShoppingBag } from "react-icons/fi";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useCartStore } from "@/stores/cartStore";
+import { useToast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 
 interface IPokemonCardDisplay {
   card: IPokemonCard;
 }
 
 export default function PokemonCardDisplay({ card }: IPokemonCardDisplay) {
+  const { toast } = useToast();
   const { addCart } = useCartStore();
   const [locked, setLocked] = useLockedBody(false, "root");
   const [imageUrl, setImageUrl] = useState<string>("");
@@ -51,6 +54,14 @@ export default function PokemonCardDisplay({ card }: IPokemonCardDisplay) {
             disabled={card.set.total <= 0}
             onClick={() => {
               addCart(card);
+              toast({
+                className: cn(
+                  "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+                ),
+                variant: "default",
+                description: "Item Added",
+                duration: 750,
+              });
             }}
           >
             <FiShoppingBag />

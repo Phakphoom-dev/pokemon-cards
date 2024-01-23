@@ -48,7 +48,7 @@ export function CartDrawer() {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="mx-auto md:w-96 xs:w-screen">
+        <div className="mx-auto md:w-96 xs:w-screen xs:overflow-y-scroll">
           <DrawerHeader>
             <DrawerTitle className="flex justify-between items-center my-1">
               <div>
